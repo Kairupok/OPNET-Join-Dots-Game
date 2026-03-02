@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Claude
+.claude/
+
+# Logs
+*.log
+
+# Editor
+.vscode/
+.idea/
+
+# Nested folders
+opnet-join-dots/
