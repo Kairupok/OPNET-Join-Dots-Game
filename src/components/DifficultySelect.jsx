@@ -4,21 +4,24 @@ export default function DifficultySelect({ onSelect, currentStreak }) {
   const difficulties = [
     {
       id: 'easy',
-      name: 'Playful Pup',
+      name: 'Easy',
+      subname: 'Playful Pup',
       emoji: '🐶',
       description: '40% random moves, casual gameplay',
       color: 'from-green-400 to-emerald-600'
     },
     {
       id: 'medium',
-      name: 'Street Smart',
+      name: 'Medium',
+      subname: 'Street Smart',
       emoji: '🦊',
       description: 'Blocks wins, 2-move lookahead',
       color: 'from-yellow-400 to-orange-500'
     },
     {
       id: 'hard',
-      name: 'Cyber Strategist',
+      name: 'Hard',
+      subname: 'Cyber Strategist',
       emoji: '🤖',
       description: 'Minimax algorithm depth 5',
       color: 'from-red-500 to-pink-600'
@@ -48,7 +51,10 @@ export default function DifficultySelect({ onSelect, currentStreak }) {
           >
             <span className="text-3xl">{diff.emoji}</span>
             <div className="text-left">
-              <h3 className="text-white font-bold text-lg">{diff.name}</h3>
+              <div className="flex items-center gap-2">
+                <h3 className="text-white font-bold text-lg">{diff.name}</h3>
+                <span className="text-white/80 font-medium">- {diff.subname}</span>
+              </div>
               <p className="text-white/70 text-sm">{diff.description}</p>
             </div>
           </button>

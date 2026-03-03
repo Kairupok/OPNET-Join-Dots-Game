@@ -1,9 +1,28 @@
 import { ROWS, COLS, CAT, DOG, EMPTY } from '../utils/gameLogic';
 
-export default function Board({ board, onColumnClick, winner, winningPositions, currentPlayer, isPlayerTurn, hoveredColumn, onColumnHover }) {
+export default function Board({ board, onColumnClick, winner, winningPositions, currentPlayer, isPlayerTurn, hoveredColumn, onColumnHover, lastDroppedPosition }) {
+  // Helper to find where piece would land in a column
+  const getPreviewRow = (col) => {
+    if (board[0][col] !== null) return null; // Column full
+    for (let row = ROWS - 1; row >= 0; row--) {
+      if (board[row][col] === EMPTY) return row;
+    }
+    return null;
+  };
+
   const isWinningPosition = (row, col) => {
     if (!winningPositions) return false;
     return winningPositions.some(([r, c]) => r === row && c === col);
+  };
+
+  const isLastMove = (row, col) => {
+    return lastDroppedPosition && lastDroppedPosition.row === row && lastDroppedPosition.col === col;
+  };
+
+  const isPreviewPosition = (row, col) => {
+    if (!isPlayerTurn || winner || currentPlayer !== CAT) return false;
+    if (hoveredColumn === null) return false;
+    return getPreviewRow(hoveredColumn) === row && hoveredColumn === col;
   };
 
   const isColumnHovered = (col) => {
@@ -11,19 +30,29 @@ export default function Board({ board, onColumnClick, winner, winningPositions, 
   };
 
   const getPieceClass = (cell, row, col) => {
-    let baseClass = 'w-12 h-12 rounded-full transition-all duration-300 ';
+    let baseClass = 'w-12 h-12 rounded-full transition-all duration-300 grid-cell ';
 
     if (cell === CAT) {
       baseClass += 'piece-cat';
     } else if (cell === DOG) {
       baseClass += 'piece-dog';
     } else {
-      baseClass += 'bg-transparent';
+      baseClass += 'bg-slate-700/50';
     }
 
     // Winning piece animation
     if (isWinningPosition(row, col)) {
       baseClass += ' winner-pulse';
+    }
+
+    // Last move highlight
+    if (isLastMove(row, col)) {
+      baseClass += ' last-move-glow';
+    }
+
+    // Preview move highlight
+    if (isPreviewPosition(row, col)) {
+      baseClass += ' preview-move';
     }
 
     return baseClass;
@@ -73,6 +102,11 @@ export default function Board({ board, onColumnClick, winner, winningPositions, 
                 {/* Column hover indicator */}
                 {isColumnHovered(col) && board[0][col] === EMPTY && (
                   <div className="absolute inset-0 rounded-full bg-neon-purple/30 animate-pulse" />
+                )}
+
+                {/* Piece preview (ghost piece showing where move will land) */}
+                {isPreviewPosition(row, col) && (
+                  <div className="absolute inset-0 rounded-full bg-neon-purple/40 border-2 border-neon-purple animate-pulse" />
                 )}
 
                 {/* Piece */}

@@ -61,7 +61,8 @@ function App() {
       setWinningPositions(winResult.positions);
       const newStats = updateStats('win');
       setStats(newStats);
-      setGameState('result');
+      // Delay showing result to let win animation play
+      setTimeout(() => setGameState('result'), 1500);
       return;
     }
 
@@ -105,7 +106,8 @@ function App() {
             setWinningPositions(winResult.positions);
             const newStats = updateStats('lose');
             setStats(newStats);
-            setGameState('result');
+            // Delay showing result to let win animation play
+            setTimeout(() => setGameState('result'), 1500);
             return;
           }
 
@@ -152,13 +154,13 @@ function App() {
       <div className="orb orb-3" />
 
       {/* Main content */}
-      <div className="relative z-10 min-h-screen flex flex-col items-center px-4 py-8">
+      <div className="relative z-10 min-h-screen flex flex-col justify-center items-center px-4 py-8">
         {/* Header */}
-        <header className="text-center mb-8">
-          <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-neon-purple via-neon-pink to-neon-cyan bg-clip-text text-transparent mb-2">
+        <header className="text-center mb-10">
+          <h1 className="text-5xl sm:text-7xl font-black bg-gradient-to-r from-neon-purple via-neon-pink to-neon-cyan bg-clip-text text-transparent drop-shadow-lg mb-4 tracking-wider title-glow" style={{ fontFamily: '"Press Start 2P", cursive' }}>
             OPNET
           </h1>
-          <p className="text-white/60">Join Dots • Cat vs AI</p>
+          <p className="text-white/80 text-lg sm:text-xl font-medium" style={{ fontFamily: '"Russo One", sans-serif' }}>Join Dots • Cat vs AI</p>
         </header>
 
         {/* Difficulty Selection */}
@@ -201,6 +203,8 @@ function App() {
                   currentPlayer={currentPlayer}
                   isPlayerTurn={currentPlayer === CAT}
                   hoveredColumn={hoveredColumn}
+                  onColumnHover={setHoveredColumn}
+                  lastDroppedPosition={lastDroppedPosition}
                 />
               </div>
 
